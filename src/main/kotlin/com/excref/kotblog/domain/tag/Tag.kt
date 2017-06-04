@@ -1,11 +1,7 @@
 package com.excref.kotblog.domain.tag
 
-import java.io.Serializable
-import java.time.LocalDateTime
-import java.util.*
+import com.excref.kotblog.domain.common.UuidAwareDomain
 import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
 
 /**
  * @author Arthur Asatryan
@@ -13,11 +9,5 @@ import javax.persistence.Id
  */
 @Entity
 data class Tag(
-        val name: String,
-        val uuid: String = UUID.randomUUID().toString(),
-        val created: LocalDateTime = LocalDateTime.now(),
-        val updated: LocalDateTime = LocalDateTime.now(),
-        val removed: LocalDateTime? = null,
-        @Id
-        @GeneratedValue val id: Long? = null
-) : Serializable
+        val name: String
+) : UuidAwareDomain()
