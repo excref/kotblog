@@ -150,7 +150,7 @@ class TagServiceImplTest : AbstractServiceImplTest() {
         expect(tagRepository.findByName(name)).andReturn(tag)
         replayAll()
         // test scenario
-        assertThat(tagService.existsForName(name)).isFalse()
+        assertThat(tagService.existsForName(name)).isTrue()
         verifyAll()
     }
     //endregion
