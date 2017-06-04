@@ -9,7 +9,7 @@ os:
 sudo: false
 
 script:
-  - ./gradlew clean build
+  - ./gradlew build --no-daemon --stacktrace --console=plain
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
