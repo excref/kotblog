@@ -59,6 +59,7 @@ sonarqube {
         property "sonar.sourceEncoding", "UTF-8"
         property "sonar.projectName", "Kotblog"
         property "sonar.projectKey", "excref"
+        property "sonar.organization", "excref"
         property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.login", System.getenv("SONAR_TOKEN")
         property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
