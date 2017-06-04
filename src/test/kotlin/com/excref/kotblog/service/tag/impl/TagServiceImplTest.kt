@@ -10,9 +10,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.easymock.EasyMock.*
 import org.easymock.Mock
 import org.easymock.TestSubject
-import org.junit.Assert
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.util.*
 
@@ -35,7 +32,12 @@ class TagServiceImplTest : AbstractServiceImplTest() {
     //region initial
     @Test
     fun testTagService() {
-        Assert.assertNotNull(tagService)
+        assertThat(tagService).isNotNull()
+    }
+
+    @Test
+    fun testTagRepository() {
+        assertThat(tagRepository).isNotNull()
     }
     //endregion
 
@@ -131,7 +133,7 @@ class TagServiceImplTest : AbstractServiceImplTest() {
         expect(tagRepository.findByName(name)).andReturn(null)
         replayAll()
         // test scenario
-        assertFalse(tagService.existsForName(name))
+        assertThat(tagService.existsForName(name)).isFalse()
         verifyAll()
     }
 
@@ -148,7 +150,7 @@ class TagServiceImplTest : AbstractServiceImplTest() {
         expect(tagRepository.findByName(name)).andReturn(tag)
         replayAll()
         // test scenario
-        assertTrue(tagService.existsForName(name))
+        assertThat(tagService.existsForName(name)).isFalse()
         verifyAll()
     }
     //endregion
