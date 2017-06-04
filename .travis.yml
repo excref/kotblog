@@ -1,9 +1,15 @@
 language: java
+
+jdk:
+  - oraclejdk8
+
+os:
+  - linux
+
 sudo: false
 
-before_script:
-  - chmod +x gradlew
-script: ./gradlew build
+script:
+  - ./gradlew clean build
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
