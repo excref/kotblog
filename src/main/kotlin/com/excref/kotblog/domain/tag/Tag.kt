@@ -8,6 +8,4 @@ import javax.persistence.Entity
  * @since 6/4/17 3:13 PM
  */
 @Entity
-data class Tag(
-        val name: String
-) : UuidAwareDomain()
+data class Tag(val name: String) : UuidAwareDomain()
