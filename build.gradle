@@ -1,18 +1,26 @@
+//region Common
+
 buildscript {
     ext {
         kotlinVersion = '1.1.2-2'
         springBootVersion = '1.5.3.RELEASE'
+        springManagementVersion = '1.0.2.RELEASE'
         sonarqubeVersion = '2.5'
         easymockVersion = '3.4'
+        easymockclassextensionVersion = '3.2'
+        commonsCollectionVersion = '4.1'
+        commonsLangVersion = '3.5'
     }
     repositories {
+        mavenLocal()
         mavenCentral()
     }
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${sonarqubeVersion}"
+        classpath("io.spring.gradle:dependency-management-plugin:${springManagementVersion}")
+        classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${sonarqubeVersion}")
     }
 }
 
@@ -21,10 +29,13 @@ allprojects {
     apply plugin: 'kotlin'
     apply plugin: 'kotlin-spring'
     apply plugin: 'eclipse'
-    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
 
     version = '0.0.1-SNAPSHOT'
     sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    ext.springBootMavenBomVersion = "org.springframework.boot:spring-boot-dependencies:1.5.3.RELEASE"
 
     compileKotlin {
         kotlinOptions.jvmTarget = "1.8"
@@ -42,14 +53,20 @@ allprojects {
     dependencies {
         compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
         compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
-        compile group: 'commons-io', name: 'commons-io', version: '2.5'
-        compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
-        compile group: 'commons-codec', name: 'commons-codec', version: '1.10'
-        compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.1'
-        compile group: 'junit', name: 'junit', version: '4.12'
-        testCompile("org.easymock:easymock:${easymockVersion}")
+        compile("org.apache.commons:commons-collections4:${commonsCollectionVersion}")
+        compile("org.apache.commons:commons-lang3:${commonsLangVersion}")
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom ext.springBootMavenBomVersion
+        }
     }
 }
+
+//endregion
+
+//region Sonar
 
 apply plugin: "org.sonarqube"
 apply plugin: 'jacoco'
@@ -66,17 +83,80 @@ sonarqube {
     }
 }
 
-dependencies {
-    compile('org.springframework.boot:spring-boot-starter-actuator')
-    compile('org.springframework.boot:spring-boot-actuator-docs')
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile('org.springframework.boot:spring-boot-starter-hateoas')
-    compile('org.springframework.boot:spring-boot-starter-jersey')
-    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
-    compile('org.springframework.boot:spring-boot-starter-web')
-    runtime('org.springframework.boot:spring-boot-devtools')
-    runtime('com.h2database:h2')
-//	runtime('org.postgresql:postgresql')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
-    testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
+//endregion
+
+//region Projects
+
+project(':blog:api:rest') {
+
+    apply plugin: "org.springframework.boot"
+
+    dependencies {
+        compile project(':blog:api:model')
+        compile project(':blog:api:facade')
+
+        compile('org.springframework.boot:spring-boot-starter-jersey')
+        compile('org.springframework.boot:spring-boot-starter-web')
+        compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+        compile('org.springframework.boot:spring-boot-starter-actuator')
+        compile('org.springframework.boot:spring-boot-actuator-docs')
+        compile('org.springframework.boot:spring-boot-starter-hateoas')
+        runtime('org.springframework.boot:spring-boot-devtools')
+    }
+
+    bootRepackage {
+        mainClass = 'com.excref.kotblog.blog.KotblogApplication'
+        executable = true
+    }
 }
+
+project(':blog:api:facade') {
+    dependencies {
+        compile project(':blog:api:model')
+        compile project(':blog:service:impl')
+    }
+}
+
+project(':blog:service:impl') {
+
+    dependencies {
+        compile project(':blog:service:core')
+        compile project(':blog:persistence')
+
+        testCompile project(':blog:test-toolkit')
+    }
+
+}
+
+project(':blog:persistence') {
+
+    dependencies {
+        compile project(':blog:service:core')
+
+        //	runtime('org.postgresql:postgresql')
+    }
+
+}
+
+project(':blog:service:core') {
+    dependencies {
+        compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    }
+}
+
+project(':blog:test-toolkit') {
+
+    dependencies {
+        compile project(':blog:service:core')
+
+        compile("junit:junit")
+        compile('org.springframework.boot:spring-boot-starter-test')
+        compile('org.springframework.restdocs:spring-restdocs-mockmvc')
+        compile("org.easymock:easymock:${easymockVersion}")
+        compile("org.easymock:easymockclassextension:${easymockclassextensionVersion}")
+        runtime('com.h2database:h2')
+    }
+
+}
+
+//endregion

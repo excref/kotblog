@@ -1,0 +1,19 @@
+include 'blog:api:rest'
+findProject(':blog:api:rest')?.name = 'rest'
+
+include 'blog:api:facade'
+findProject(':blog:api:facade')?.name = 'facade'
+
+include 'blog:api:model'
+findProject(':blog:api:model')?.name = 'model'
+
+include 'blog:persistence'
+findProject(':blog:persistence')?.name = 'persistence'
+
+include 'blog:service:core'
+findProject(':blog:service:core')?.name = 'core'
+include 'blog:service:impl'
+findProject(':blog:service:impl')?.name = 'impl'
+
+include 'blog:test-toolkit'
+findProject(':blog:test-toolkit')?.name = 'test-toolkit'
