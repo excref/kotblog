@@ -18,8 +18,6 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class TagServiceImpl : TagService {
 
-    private val logger: Logger = LoggerFactory.getLogger(TagServiceImpl::class.java)
-
     //region Dependencies
     @Autowired
     private lateinit var tagRepository: TagRepository
@@ -35,13 +33,16 @@ class TagServiceImpl : TagService {
 
     @Transactional(readOnly = true)
     override fun getByUuid(uuid: String): Tag {
+        logger.debug("Getting tag with uuid - $uuid")
         val tag = tagRepository.findByUuid(uuid)
         assertTagNotNullForUuid(tag, uuid)
+        logger.debug("Successfully got tag - $tag")
         return tag as Tag
     }
 
     @Transactional(readOnly = true)
     override fun existsForName(name: String): Boolean {
+        logger.debug("Getting tag with name - $name")
         return tagRepository.findByName(name) != null
     }
     //endregion
@@ -59,6 +60,12 @@ class TagServiceImpl : TagService {
             logger.error("Can not find tag for uuid $uuid")
             throw TagNotExistsForUuidException(uuid, "Can not find tag for uuid $uuid")
         }
+    }
+    //endregion
+
+    //region Companions
+    companion object {
+        private val logger: Logger = LoggerFactory.getLogger(TagServiceImpl::class.java)
     }
     //endregion
 }
