@@ -63,7 +63,7 @@ class TagServiceImpl : TagService {
     }
     //endregion
 
-    //region Companions
+    //region Companion
     companion object {
         private val logger: Logger = LoggerFactory.getLogger(TagServiceImpl::class.java)
     }
