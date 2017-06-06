@@ -11,9 +11,7 @@ class ServiceImplTestHelper {
     //region Public methods
 
     //region Tag
-    fun buildTag(): Tag = buildTag(UUID.randomUUID().toString())
-
-    fun buildTag(name: String): Tag = Tag(name)
+    fun buildTag(name: String = UUID.randomUUID().toString()): Tag = Tag(name)
     //endregion
 
     //region User

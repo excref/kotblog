@@ -17,6 +17,7 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 import org.springframework.stereotype.Service
+import java.util.*
 import javax.persistence.Entity
 import javax.persistence.EnumType
 import javax.persistence.Enumerated
@@ -128,16 +129,16 @@ class UserServiceIntegrationTest : AbstractServiceIntegrationTest() {
 
     // todo: replace userRepository.save to the userService.create
     fun persistUser(
-            email: String = "biacoder@gmail.com",
-            password: String = "you can't even guess me! :P",
+            email: String = UUID.randomUUID().toString(),
+            password: String = UUID.randomUUID().toString(),
             role: UserRole = UserRole.GUEST
     ): User = userRepository.save(User(email, password, role))
 }
 
 // todo: move this method to the helper class
 fun buildUser(
-        email: String = "biacoder@gmail.com",
-        password: String = "you can't even guess me! :P",
+        email: String = UUID.randomUUID().toString(),
+        password: String = UUID.randomUUID().toString(),
         role: UserRole = UserRole.GUEST
 ): User = User(email, password, role)
 
