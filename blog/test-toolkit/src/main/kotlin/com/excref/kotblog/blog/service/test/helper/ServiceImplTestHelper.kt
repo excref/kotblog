@@ -1,5 +1,6 @@
 package com.excref.kotblog.blog.service.test.helper
 
+import com.excref.kotblog.blog.service.category.domain.Category
 import com.excref.kotblog.blog.service.tag.domain.Tag
 import java.util.*
 
@@ -12,5 +13,7 @@ class ServiceImplTestHelper {
     fun buildTag(): Tag = buildTag(UUID.randomUUID().toString())
 
     fun buildTag(name: String): Tag = Tag(name)
+    fun  buildCategory(): Category = buildCategory(UUID.randomUUID().toString())
+    fun  buildCategory(name: String): Category = Category(name)
     //endregion
 }

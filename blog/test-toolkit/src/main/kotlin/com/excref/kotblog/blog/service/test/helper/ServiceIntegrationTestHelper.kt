@@ -1,5 +1,7 @@
 package com.excref.kotblog.blog.service.test.helper
 
+import com.excref.kotblog.blog.service.category.CategoryService
+import com.excref.kotblog.blog.service.category.domain.Category
 import com.excref.kotblog.blog.service.tag.TagService
 import com.excref.kotblog.blog.service.tag.domain.Tag
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,6 +18,9 @@ class ServiceIntegrationTestHelper {
     //region Dependencies
     @Autowired
     private lateinit var tagService: TagService
+
+    @Autowired
+    private lateinit var categoryService: CategoryService
     //endregion
 
     //region Public methods
@@ -25,6 +30,14 @@ class ServiceIntegrationTestHelper {
 
     fun persistTag(name: String): Tag {
         return tagService.create(name)
+    }
+
+    fun persistCategory() : Category {
+        return persistCategory(UUID.randomUUID().toString())
+    }
+
+    fun persistCategory(name: String) : Category {
+        return categoryService.create(name)
     }
     //endregion
 }
