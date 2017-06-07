@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner
  * @author Arthur Asatryan
  * @since 6/4/17 4:09 PM
  */
-// todo: issue
+// todo: see issue #20
 @RunWith(SpringRunner::class)
 @SpringBootTest
 @EnableJpaRepositories(basePackages = arrayOf("com.excref.kotblog.blog.persistence.*"))
