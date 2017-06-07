@@ -1,6 +1,8 @@
 package com.excref.kotblog.blog.service.test.helper
 
 import com.excref.kotblog.blog.service.tag.domain.Tag
+import com.excref.kotblog.blog.service.user.domain.User
+import com.excref.kotblog.blog.service.user.domain.UserRole
 import java.util.*
 
 /**
@@ -15,6 +17,11 @@ class ServiceImplTestHelper {
     //endregion
 
     //region User
+    fun buildUser(
+            email: String = UUID.randomUUID().toString(),
+            password: String = UUID.randomUUID().toString(),
+            role: UserRole = UserRole.GUEST
+    ): User = User(email, password, role)
     //endregion
 
     //endregion

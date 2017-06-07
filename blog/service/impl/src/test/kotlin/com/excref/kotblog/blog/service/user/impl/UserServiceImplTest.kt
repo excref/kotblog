@@ -1,26 +1,18 @@
 package com.excref.kotblog.blog.service.user.impl
 
-import com.excref.kotblog.blog.service.common.UuidAwareDomain
+import com.excref.kotblog.blog.persistence.user.UserRepository
 import com.excref.kotblog.blog.service.test.AbstractServiceImplTest
-import com.excref.kotblog.blog.service.test.AbstractServiceIntegrationTest
+import com.excref.kotblog.blog.service.user.UserService
+import com.excref.kotblog.blog.service.user.domain.User
+import com.excref.kotblog.blog.service.user.domain.UserRole
+import com.excref.kotblog.blog.service.user.exception.UserAlreadyExistsForEmailException
 import org.assertj.core.api.Assertions.assertThat
-import org.easymock.EasyMock.expect
+import org.easymock.EasyMock.*
 import org.easymock.Mock
 import org.easymock.TestSubject
+import org.junit.Assert.fail
 import org.junit.Test
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.data.repository.CrudRepository
-import org.springframework.stereotype.Component
-import org.springframework.stereotype.Repository
-import org.springframework.stereotype.Service
 import java.util.*
-import javax.persistence.Entity
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
 
 /**
  * @author Arthur Asatryan
@@ -62,6 +54,49 @@ class UserServiceImplTest : AbstractServiceImplTest() {
     }
     //endregion
 
+    //region create
+    /**
+     * When user already exists for email
+     */
+    @Test
+    fun testCreate1() {
+        resetAll()
+        // test data
+        val user = helper.buildUser()
+        // expectations
+        expect(userRepository.findByEmail(user.email)).andReturn(user)
+        replayAll()
+        // test scenario
+        try {
+            userService.create(user.email, UUID.randomUUID().toString(), UserRole.GUEST)
+            fail()
+        } catch(ex: UserAlreadyExistsForEmailException) {
+            assertThat(ex).isNotNull().extracting("email").containsOnly(user.email)
+        }
+        verifyAll()
+    }
+
+    /**
+     * When user does not exists
+     */
+    @Test
+    fun testCreate2() {
+        resetAll()
+        // test data
+        val email = "biacoder@gmail.com"
+        val password = "you can't even guess me! :P"
+        val role = UserRole.BLOGGER
+        // expectations
+        expect(userRepository.findByEmail(email)).andReturn(null)
+        expect(userRepository.save(isA(User::class.java))).andAnswer({ getCurrentArguments()[0] as User })
+        replayAll()
+        // test scenario
+        val result = userService.create(email, password, role)
+        assertThat(result).isNotNull().extracting("email", "password", "role").containsOnly(email, password, role)
+        verifyAll()
+    }
+    //endregion
+
     //region existsForEmail
     /**
      * When exists
@@ -71,7 +106,7 @@ class UserServiceImplTest : AbstractServiceImplTest() {
         resetAll()
         // test data
         val email = "biacoder@gmail.com"
-        val user = buildUser(email = email)
+        val user = helper.buildUser(email = email)
         // expectations
         expect(userRepository.findByEmail(email)).andReturn(user)
         replayAll()
@@ -97,108 +132,6 @@ class UserServiceImplTest : AbstractServiceImplTest() {
     }
     //endregion
 
-    //endregion
-
-}
-
-@EntityScan(basePackages = arrayOf("com.excref.kotblog.blog.service.*"))
-@EnableJpaRepositories(basePackageClasses = arrayOf(UserRepository::class))
-@Component
-class UserServiceIntegrationTest : AbstractServiceIntegrationTest() {
-
-    //region Dependencies
-    @Autowired
-    private lateinit var userService: UserService
-    //endregion
-
-    //region Test methods
-    @Test
-    fun testExistsForEmail() {
-        // given
-        val email = "biacoder@gmail.com"
-        persistUser(email = email)
-        // when
-        val existsForEmail = userService.existsForEmail(email)
-        assertThat(existsForEmail).isTrue()
-    }
-    //endregion
-
-    // todo: move the code below to the integration tests helper class
-    @Autowired
-    private lateinit var userRepository: UserRepository
-
-    // todo: replace userRepository.save to the userService.create
-    fun persistUser(
-            email: String = UUID.randomUUID().toString(),
-            password: String = UUID.randomUUID().toString(),
-            role: UserRole = UserRole.GUEST
-    ): User = userRepository.save(User(email, password, role))
-}
-
-// todo: move this method to the helper class
-fun buildUser(
-        email: String = UUID.randomUUID().toString(),
-        password: String = UUID.randomUUID().toString(),
-        role: UserRole = UserRole.GUEST
-): User = User(email, password, role)
-
-// todo: move to the domain
-@Entity
-data class User(
-        val email: String,
-        val password: String,
-        @Enumerated(EnumType.STRING)
-        val role: UserRole = UserRole.GUEST
-) : UuidAwareDomain()
-
-// todo: move to the appropriate domain
-enum class UserRole {
-    GUEST, BLOGGER, SYS_ADMIN
-}
-
-// todo: move to the repository
-@Repository
-interface UserRepository : CrudRepository<User, Long> {
-    /**
-     * Finds user with the given email
-     *
-     * @param   email The user email
-     * @return  User if found, null otherwise
-     */
-    fun findByEmail(email: String): User?
-}
-
-// todo: move to the service core
-interface UserService {
-    /**
-     * Checks if there is user with the given email
-     *
-     * @param   email The user email
-     * @return  true if found, false otherwise
-     */
-    fun existsForEmail(email: String): Boolean
-}
-
-// todo: move to the service impl
-@Service
-class UserServiceImpl : UserService {
-
-    //region Dependencies
-    @Autowired
-    private lateinit var userRepository: UserRepository
-    //endregion
-
-    //region Public methods
-    override fun existsForEmail(email: String): Boolean {
-        logger.debug("Getting user for email - $email")
-        return userRepository.findByEmail(email) != null
-    }
-    //endregion
-
-    //region Companion
-    companion object {
-        private val logger: Logger = LoggerFactory.getLogger(UserServiceImpl::class.java)
-    }
     //endregion
 
 }
