@@ -17,4 +17,12 @@ interface UserRepository : CrudRepository<User, Long> {
      * @return  User if found, null otherwise
      */
     fun findByEmail(email: String): User?
+
+    /**
+     * Finds user with the given uuid
+     *
+     * @param   uuid The user uuid
+     * @return  User if found, null otherwise
+     */
+    fun findByUuid(uuid: String): User?
 }

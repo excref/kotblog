@@ -31,6 +31,17 @@ class UserServiceIntegrationTest : AbstractServiceIntegrationTest() {
     }
 
     @Test
+    fun testGetByUuid() {
+        // given
+        val user = helper.persistUser()
+        val uuid = user.uuid
+        // when
+        val result = userService.getByUuid(uuid)
+        // then
+        assertThat(result).isNotNull().isEqualTo(user)
+    }
+
+    @Test
     fun testExistsForEmail() {
         // given
         val email = "biacoder@gmail.com"

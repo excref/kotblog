@@ -5,6 +5,7 @@ import com.excref.kotblog.blog.service.user.UserService
 import com.excref.kotblog.blog.service.user.domain.User
 import com.excref.kotblog.blog.service.user.domain.UserRole
 import com.excref.kotblog.blog.service.user.exception.UserAlreadyExistsForEmailException
+import com.excref.kotblog.blog.service.user.exception.UserNotFoundForUuidException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,6 +30,13 @@ internal class UserServiceImpl : UserService {
         return userRepository.save(User(email, password, role))
     }
 
+    override fun getByUuid(uuid: String): User {
+        logger.debug("Getting user for with - $uuid")
+        val user = userRepository.findByUuid(uuid)
+        assertUserNotNullForUuid(user, uuid)
+        return user as User
+    }
+
     override fun existsForEmail(email: String): Boolean {
         logger.debug("Getting user for email - $email")
         return userRepository.findByEmail(email) != null
@@ -40,6 +48,13 @@ internal class UserServiceImpl : UserService {
         if (existsForEmail(email)) {
             logger.error("The user with email - $email already exists")
             throw UserAlreadyExistsForEmailException(email, "The user with email - $email already exists")
+        }
+    }
+
+    private fun assertUserNotNullForUuid(user: User?, uuid: String) {
+        if (user == null) {
+            logger.error("Can not find user for uuid - $uuid")
+            throw UserNotFoundForUuidException(uuid, "Can not find user for uuid - $uuid")
         }
     }
     //endregion

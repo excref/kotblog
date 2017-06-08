@@ -6,6 +6,7 @@ import com.excref.kotblog.blog.service.user.UserService
 import com.excref.kotblog.blog.service.user.domain.User
 import com.excref.kotblog.blog.service.user.domain.UserRole
 import com.excref.kotblog.blog.service.user.exception.UserAlreadyExistsForEmailException
+import com.excref.kotblog.blog.service.user.exception.UserNotFoundForUuidException
 import org.assertj.core.api.Assertions.assertThat
 import org.easymock.EasyMock.*
 import org.easymock.Mock
@@ -93,6 +94,47 @@ class UserServiceImplTest : AbstractServiceImplTest() {
         // test scenario
         val result = userService.create(email, password, role)
         assertThat(result).isNotNull().extracting("email", "password", "role").containsOnly(email, password, role)
+        verifyAll()
+    }
+    //endregion
+
+    //region getByUuid
+    /**
+     * When user does not exists
+     */
+    @Test
+    fun testGetByUuid1() {
+        resetAll()
+        // test data
+        // expectations
+        val uuid = UUID.randomUUID().toString()
+        expect(userRepository.findByUuid(uuid)).andReturn(null)
+        replayAll()
+        // test scenario
+        try {
+            userService.getByUuid(uuid)
+            fail()
+        } catch(ex: UserNotFoundForUuidException) {
+            assertThat(ex).isNotNull().extracting("uuid").containsOnly(uuid)
+        }
+        verifyAll()
+    }
+
+    /**
+     * When user exists
+     */
+    @Test
+    fun testGetByUuid2() {
+        resetAll()
+        // test data
+        // expectations
+        val user = helper.buildUser()
+        val uuid = user.uuid
+        expect(userRepository.findByUuid(uuid)).andReturn(user)
+        replayAll()
+        // test scenario
+        val result = userService.getByUuid(uuid)
+        assertThat(result).isNotNull().isEqualTo(user)
         verifyAll()
     }
     //endregion

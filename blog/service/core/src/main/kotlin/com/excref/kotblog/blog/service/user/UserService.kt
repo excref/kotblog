@@ -26,4 +26,12 @@ interface UserService {
      * @return  true if found, false otherwise
      */
     fun existsForEmail(email: String): Boolean
+
+    /**
+     * Gets user with the given uuid
+     *
+     * @param   uuid The user uuid
+     * @throws  com.excref.kotblog.blog.service.user.exception.UserNotFoundForUuidException If user does not exists
+     */
+    fun getByUuid(uuid: String): User
 }
