@@ -2,6 +2,8 @@ package com.excref.kotblog.blog.service.test.helper
 
 import com.excref.kotblog.blog.service.category.domain.Category
 import com.excref.kotblog.blog.service.tag.domain.Tag
+import com.excref.kotblog.blog.service.user.domain.User
+import com.excref.kotblog.blog.service.user.domain.UserRole
 import java.util.*
 
 /**
@@ -10,10 +12,22 @@ import java.util.*
  */
 class ServiceImplTestHelper {
     //region Public methods
-    fun buildTag(): Tag = buildTag(UUID.randomUUID().toString())
+  
+    //region Tag
+    fun buildTag(name: String = UUID.randomUUID().toString()): Tag = Tag(name)
+    //endregion
 
-    fun buildTag(name: String): Tag = Tag(name)
-    fun  buildCategory(): Category = buildCategory(UUID.randomUUID().toString())
-    fun  buildCategory(name: String): Category = Category(name)
+    //region User
+    fun buildUser(
+            email: String = UUID.randomUUID().toString(),
+            password: String = UUID.randomUUID().toString(),
+            role: UserRole = UserRole.GUEST
+    ): User = User(email, password, role)
+    //endregion
+    
+    //region Category
+    fun buildCategory(name: String = UUID.randomUUID().toString()): Category = Category(name)
+    //endregion
+  
     //endregion
 }
