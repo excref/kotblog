@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration
  * @author Arthur Asatryan
  * @since 6/8/17 1:21 AM
  */
-@EnableAutoConfiguration
 class UserServiceIntegrationTest : AbstractServiceIntegrationTest() {
 
     //region Dependencies

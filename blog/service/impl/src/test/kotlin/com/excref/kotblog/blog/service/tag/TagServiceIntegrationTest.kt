@@ -4,13 +4,11 @@ import com.excref.kotblog.blog.service.test.AbstractServiceIntegrationTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 
 /**
  * @author Arthur Asatryan
  * @since 6/4/17 4:12 PM
  */
-@EnableAutoConfiguration
 class TagServiceIntegrationTest : AbstractServiceIntegrationTest() {
 
     //region Dependencies

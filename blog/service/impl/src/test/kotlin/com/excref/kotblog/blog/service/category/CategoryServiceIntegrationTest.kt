@@ -4,17 +4,11 @@ import com.excref.kotblog.blog.service.test.AbstractServiceIntegrationTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.stereotype.Component
 
 /**
  * @author Ruben Vardanyan
  * @since 06/07/2017 12:42
  */
-@EnableAutoConfiguration
-@EnableJpaRepositories
-@Component
 class CategoryServiceIntegrationTest : AbstractServiceIntegrationTest() {
 
     //region Dependencies
