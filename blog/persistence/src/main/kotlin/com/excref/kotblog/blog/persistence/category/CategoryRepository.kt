@@ -11,17 +11,17 @@ import org.springframework.stereotype.Repository
 @Repository
 interface CategoryRepository : CrudRepository<Category, Long> {
     /**
-     * Finds tag by name
+     * Finds category by name
      *
-     * @param   name The tag name
+     * @param   name The category name
      * @return  null if not found
      */
     fun findByName(name: String): Category?
 
     /**
-     * Finds tag by uuid
+     * Finds category by uuid
      *
-     * @param   uuid The tag uuid
+     * @param   uuid The category uuid
      * @return  null if not found
      */
     fun findByUuid(uuid: String): Category?

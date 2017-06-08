@@ -12,7 +12,7 @@ interface CategoryService {
      *
      * @param   name The category name
      * @return  Persistent category
-     * @throws  com.excref.kotblog.blog.service.tag.exception.TagAlreadyExistsForNameException If the category already exists for the given name
+     * @throws  com.excref.kotblog.blog.service.category.exception.CategoryAlreadyExistsForNameException If the category already exists for the given name
      */
     fun create(name: String): Category
 
@@ -21,7 +21,7 @@ interface CategoryService {
      *
      * @param   uuid The category uuid
      * @return  The category
-     * @throws  com.excref.kotblog.blog.service.tag.exception.TagNotExistsForUuidException If category not exists
+     * @throws  com.excref.kotblog.blog.service.category.exception.CategoryNotExistsForUuidException If category not exists
      */
     fun getByUuid(uuid: String): Category
 

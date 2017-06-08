@@ -18,10 +18,6 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CategoryServiceImpl : CategoryService {
 
-    init {
-        logger.debug("Initializing category service");
-    }
-
     //region Dependencies
     @Autowired
     private lateinit var categoryRepository: CategoryRepository

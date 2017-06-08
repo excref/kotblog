@@ -10,10 +10,8 @@ import java.util.*
  */
 class ServiceImplTestHelper {
     //region Public methods
-    fun buildTag(): Tag = buildTag(UUID.randomUUID().toString())
+    fun buildTag(name: String = UUID.randomUUID().toString()): Tag = Tag(name)
 
-    fun buildTag(name: String): Tag = Tag(name)
-    fun  buildCategory(): Category = buildCategory(UUID.randomUUID().toString())
-    fun  buildCategory(name: String): Category = Category(name)
+    fun buildCategory(name: String = UUID.randomUUID().toString()): Category = Category(name)
     //endregion
 }

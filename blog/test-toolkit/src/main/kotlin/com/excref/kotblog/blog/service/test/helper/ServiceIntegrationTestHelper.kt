@@ -24,19 +24,11 @@ class ServiceIntegrationTestHelper {
     //endregion
 
     //region Public methods
-    fun persistTag(): Tag {
-        return persistTag(UUID.randomUUID().toString())
-    }
-
-    fun persistTag(name: String): Tag {
+    fun persistTag(name: String = UUID.randomUUID().toString()): Tag {
         return tagService.create(name)
     }
 
-    fun persistCategory() : Category {
-        return persistCategory(UUID.randomUUID().toString())
-    }
-
-    fun persistCategory(name: String) : Category {
+    fun persistCategory(name: String = UUID.randomUUID().toString()) : Category {
         return categoryService.create(name)
     }
     //endregion
