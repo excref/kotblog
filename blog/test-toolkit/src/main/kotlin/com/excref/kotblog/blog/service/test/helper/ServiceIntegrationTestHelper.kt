@@ -1,5 +1,7 @@
 package com.excref.kotblog.blog.service.test.helper
 
+import com.excref.kotblog.blog.service.category.CategoryService
+import com.excref.kotblog.blog.service.category.domain.Category
 import com.excref.kotblog.blog.service.tag.TagService
 import com.excref.kotblog.blog.service.tag.domain.Tag
 import com.excref.kotblog.blog.service.user.UserService
@@ -21,6 +23,9 @@ class ServiceIntegrationTestHelper {
     private lateinit var tagService: TagService
 
     @Autowired
+    private lateinit var categoryService: CategoryService
+  
+    @Autowired
     private lateinit var userService: UserService
     //endregion
 
@@ -30,6 +35,14 @@ class ServiceIntegrationTestHelper {
     fun persistTag(name: String = UUID.randomUUID().toString()): Tag {
         return tagService.create(name)
     }
+    //endregion
+    
+    //region Category
+    fun persistCategory(name: String = UUID.randomUUID().toString()) : Category {
+        return categoryService.create(name)
+    }
+    //endregion
+
     //endregion
 
     //region User
