@@ -49,7 +49,7 @@ class CategoryServiceImpl : CategoryService {
 
     //region Utility methods
     fun assertCategoryNotExistForName(name: String) {
-        if(existsForName(name)) {
+        if (existsForName(name)) {
             logger.error("The category with name $name already exists")
             throw CategoryAlreadyExistsForNameException(name, "The category with name $name already exists")
         }

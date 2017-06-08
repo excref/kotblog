@@ -12,7 +12,7 @@ import java.util.*
  */
 class ServiceImplTestHelper {
     //region Public methods
-  
+
     //region Tag
     fun buildTag(name: String = UUID.randomUUID().toString()): Tag = Tag(name)
     //endregion
@@ -24,10 +24,10 @@ class ServiceImplTestHelper {
             role: UserRole = UserRole.GUEST
     ): User = User(email, password, role)
     //endregion
-    
+
     //region Category
     fun buildCategory(name: String = UUID.randomUUID().toString()): Category = Category(name)
     //endregion
-  
+
     //endregion
 }

@@ -24,7 +24,7 @@ class ServiceIntegrationTestHelper {
 
     @Autowired
     private lateinit var categoryService: CategoryService
-  
+
     @Autowired
     private lateinit var userService: UserService
     //endregion
@@ -36,9 +36,9 @@ class ServiceIntegrationTestHelper {
         return tagService.create(name)
     }
     //endregion
-    
+
     //region Category
-    fun persistCategory(name: String = UUID.randomUUID().toString()) : Category {
+    fun persistCategory(name: String = UUID.randomUUID().toString()): Category {
         return categoryService.create(name)
     }
     //endregion

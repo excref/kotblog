@@ -5,7 +5,6 @@ import com.excref.kotblog.blog.service.user.domain.UserRole
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 
 /**
  * @author Arthur Asatryan

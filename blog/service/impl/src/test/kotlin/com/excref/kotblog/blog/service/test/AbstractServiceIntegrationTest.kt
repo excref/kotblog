@@ -1,16 +1,11 @@
 package com.excref.kotblog.blog.service.test
 
 import com.excref.kotblog.blog.service.test.helper.ServiceIntegrationTestHelper
-import org.junit.Ignore
-import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests
-import org.springframework.test.context.junit4.SpringRunner
 
 /**
  * @author Arthur Asatryan
