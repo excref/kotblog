@@ -5,16 +5,12 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.stereotype.Component
 
 /**
  * @author Arthur Asatryan
  * @since 6/4/17 4:12 PM
  */
 @EnableAutoConfiguration
-@EnableJpaRepositories
-@Component
 class TagServiceIntegrationTest : AbstractServiceIntegrationTest() {
 
     //region Dependencies
