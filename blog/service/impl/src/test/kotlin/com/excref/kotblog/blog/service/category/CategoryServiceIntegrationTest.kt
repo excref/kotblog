@@ -21,8 +21,9 @@ class CategoryServiceIntegrationTest : AbstractServiceIntegrationTest() {
     fun create() {
         // given
         val name = "Music"
+        val user = helper.persistUser()
         // when
-        val category = categoryService.create(name)
+        val category = categoryService.create(name, user.uuid)
         // then
         assertThat(category).isNotNull().extracting("name").containsOnly(name)
         assertThat(categoryService.getByUuid(category.uuid)).isNotNull().isEqualTo(category)
@@ -41,9 +42,10 @@ class CategoryServiceIntegrationTest : AbstractServiceIntegrationTest() {
     @Test
     fun existsForName() {
         // given
-        val category = helper.persistCategory()
+        val user = helper.persistUser()
+        val category = helper.persistCategory(user = user)
         // when
-        val result = categoryService.existsForName(category.name)
+        val result = categoryService.existsForNameAndUser(category.name, user.uuid)
         // then
         assertThat(result).isTrue()
     }

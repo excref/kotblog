@@ -3,8 +3,9 @@ package com.excref.kotblog.blog.service.category.impl
 import com.excref.kotblog.blog.persistence.category.CategoryRepository
 import com.excref.kotblog.blog.service.category.CategoryService
 import com.excref.kotblog.blog.service.category.domain.Category
-import com.excref.kotblog.blog.service.category.exception.CategoryAlreadyExistsForNameException
+import com.excref.kotblog.blog.service.category.exception.CategoryAlreadyExistsForNameAndUserException
 import com.excref.kotblog.blog.service.category.exception.CategoryNotExistsForUuidException
+import com.excref.kotblog.blog.service.user.UserService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,14 +22,18 @@ class CategoryServiceImpl : CategoryService {
     //region Dependencies
     @Autowired
     private lateinit var categoryRepository: CategoryRepository
+
+    @Autowired
+    private lateinit var userService: UserService
     //endregion
 
     //region Public methods
     @Transactional
-    override fun create(name: String): Category {
-        assertCategoryNotExistForName(name)
+    override fun create(name: String, userUuid: String): Category {
+        assertCategoryNotExistForName(name, userUuid)
         logger.debug("Creating category with name - $name")
-        return categoryRepository.save(Category(name))
+        val user = userService.getByUuid(userUuid)
+        return categoryRepository.save(Category(name, user))
     }
 
     @Transactional(readOnly = true)
@@ -41,17 +46,17 @@ class CategoryServiceImpl : CategoryService {
     }
 
     @Transactional(readOnly = true)
-    override fun existsForName(name: String): Boolean {
+    override fun existsForNameAndUser(name: String, userUuid: String): Boolean {
         logger.debug("Getting category with name - $name")
-        return categoryRepository.findByName(name) != null
+        return categoryRepository.findByNameAndUserUuid(name, userUuid) != null
     }
     //endregion
 
     //region Utility methods
-    fun assertCategoryNotExistForName(name: String) {
-        if (existsForName(name)) {
-            logger.error("The category with name $name already exists")
-            throw CategoryAlreadyExistsForNameException(name, "The category with name $name already exists")
+    fun assertCategoryNotExistForName(name: String, userUuid: String) {
+        if (existsForNameAndUser(name, userUuid)) {
+            logger.error("The category with name $name for user with uuid $userUuid already exists")
+            throw CategoryAlreadyExistsForNameAndUserException(name, "The category with name $name for user with uuid $userUuid already exists")
         }
     }
 

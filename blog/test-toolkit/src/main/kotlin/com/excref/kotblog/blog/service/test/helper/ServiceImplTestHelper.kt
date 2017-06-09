@@ -26,7 +26,10 @@ class ServiceImplTestHelper {
     //endregion
 
     //region Category
-    fun buildCategory(name: String = UUID.randomUUID().toString()): Category = Category(name)
+    fun buildCategory(
+            name: String = UUID.randomUUID().toString(),
+            user: User = buildUser()
+    ): Category = Category(name, user)
     //endregion
 
     //endregion
