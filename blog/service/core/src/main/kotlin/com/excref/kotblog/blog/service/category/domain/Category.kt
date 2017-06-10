@@ -1,8 +1,8 @@
 package com.excref.kotblog.blog.service.category.domain
 
 import com.excref.kotblog.blog.service.common.UuidAwareDomain
-import com.excref.kotblog.blog.service.user.domain.User
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Entity
 
 /**
  * @author Ruben Vardanyan
@@ -11,9 +11,5 @@ import javax.persistence.*
 @Entity
 data class Category(
         @Column(name = "name", nullable = false)
-        val name: String,
-
-        @ManyToOne(optional = false, fetch = FetchType.LAZY)
-        @JoinColumn(name = "user_id", nullable = false)
-        val user: User
+        val name: String
 ) : UuidAwareDomain()
