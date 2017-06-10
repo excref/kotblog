@@ -3,7 +3,7 @@ package com.excref.kotblog.blog.service.category.impl
 import com.excref.kotblog.blog.persistence.category.CategoryRepository
 import com.excref.kotblog.blog.service.category.CategoryService
 import com.excref.kotblog.blog.service.category.domain.Category
-import com.excref.kotblog.blog.service.category.exception.CategoryAlreadyExistsForNameAndUserException
+import com.excref.kotblog.blog.service.category.exception.CategoryAlreadyExistsForNameException
 import com.excref.kotblog.blog.service.category.exception.CategoryNotExistsForUuidException
 import com.excref.kotblog.blog.service.test.AbstractServiceImplTest
 import com.excref.kotblog.blog.service.user.UserService
@@ -60,15 +60,14 @@ class CategoryServiceImplTest : AbstractServiceImplTest() {
         resetAll()
         // test data
         val name = "Software development"
-        val user = helper.buildUser()
-        val category = helper.buildCategory(name, user)
+        val category = helper.buildCategory(name)
         //expectations
-        expect(categoryRepository.findByNameAndUserUuid(name, user.uuid)).andReturn(category)
+        expect(categoryRepository.findByName(name)).andReturn(category)
         replayAll()
         // test scenario
         try {
-            categoryService.create(name, user.uuid)
-        } catch (ex: CategoryAlreadyExistsForNameAndUserException) {
+            categoryService.create(name)
+        } catch (ex: CategoryAlreadyExistsForNameException) {
             assertThat(ex).isNotNull().extracting("name").containsOnly(name)
         }
         verifyAll()
@@ -79,14 +78,12 @@ class CategoryServiceImplTest : AbstractServiceImplTest() {
         resetAll()
         // test data
         val name = "Software development"
-        val user = helper.buildUser()
         //expectations
-        expect(categoryRepository.findByNameAndUserUuid(name, user.uuid)).andReturn(null)
-        expect(userService.getByUuid(user.uuid)).andReturn(user)
+        expect(categoryRepository.findByName(name)).andReturn(null)
         expect(categoryRepository.save(isA(Category::class.java))).andAnswer({ EasyMock.getCurrentArguments()[0] as Category? })
         replayAll()
         // test scenario
-        val category = categoryService.create(name, user.uuid)
+        val category = categoryService.create(name)
         assertThat(category).isNotNull().extracting("name").containsOnly(name)
         verifyAll()
     }
@@ -138,12 +135,11 @@ class CategoryServiceImplTest : AbstractServiceImplTest() {
         resetAll()
         // test data
         val name = "Art"
-        val user = helper.buildUser()
         // expectations
-        expect(categoryRepository.findByNameAndUserUuid(name, user.uuid)).andReturn(null)
+        expect(categoryRepository.findByName(name)).andReturn(null)
         replayAll()
         // test scenario
-        assertThat(categoryService.existsForNameAndUser(name, user.uuid)).isFalse()
+        assertThat(categoryService.existsForName(name)).isFalse()
     }
 
     /**
@@ -154,13 +150,12 @@ class CategoryServiceImplTest : AbstractServiceImplTest() {
         resetAll()
         // test data
         val name = "Sports"
-        val user = helper.buildUser()
-        val category = helper.buildCategory(name, user)
+        val category = helper.buildCategory(name)
         // expectations
-        expect(categoryRepository.findByNameAndUserUuid(name, user.uuid)).andReturn(category)
+        expect(categoryRepository.findByName(name)).andReturn(category)
         replayAll()
         // test scenario
-        assertThat(categoryService.existsForNameAndUser(name, user.uuid)).isTrue()
+        assertThat(categoryService.existsForName(name)).isTrue()
     }
     //endregion
 
