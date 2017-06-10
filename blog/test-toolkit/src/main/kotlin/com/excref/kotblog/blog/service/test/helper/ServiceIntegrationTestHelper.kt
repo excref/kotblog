@@ -38,8 +38,8 @@ class ServiceIntegrationTestHelper {
     //endregion
     
     //region Category
-    fun persistCategory(name: String = UUID.randomUUID().toString(), user: User = persistUser()): Category {
-        return categoryService.create(name, user.uuid)
+    fun persistCategory(name: String = UUID.randomUUID().toString()): Category {
+        return categoryService.create(name)
     }
     //endregion
 
