@@ -30,5 +30,4 @@ class Post(
 
         @OneToMany(cascade = arrayOf(CascadeType.ALL))
         var categories: List<Category> = ArrayList()
-
 ) : UuidAwareDomain()
