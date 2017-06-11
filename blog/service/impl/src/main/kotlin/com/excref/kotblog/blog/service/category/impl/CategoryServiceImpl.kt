@@ -41,7 +41,7 @@ class CategoryServiceImpl : CategoryService {
         return category as Category
     }
 
-
+    @Transactional(readOnly = true)
     override fun getByUuids(uuids: List<String>): List<Category> {
         logger.debug("Getting categories with uuids - $uuids")
         val categories = categoryRepository.findByUuidIn(uuids)

@@ -65,7 +65,6 @@ class ServiceIntegrationTestHelper {
 
     //region Post
     fun persistPost(
-
             name: String = UUID.randomUUID().toString(),
             title: String = UUID.randomUUID().toString(),
             content: String = UUID.randomUUID().toString(),

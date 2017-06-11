@@ -1,6 +1,5 @@
-package com.excref.kotblog.blog.service.post.impl
+package com.excref.kotblog.blog.service.post
 
-import com.excref.kotblog.blog.service.post.PostService
 import com.excref.kotblog.blog.service.test.AbstractServiceIntegrationTest
 import org.assertj.core.api.Assertions
 import org.junit.Test
@@ -20,12 +19,12 @@ class PostServiceImplOntegrationTest : AbstractServiceIntegrationTest() {
     //region Test methods
     @Test
     fun createAndGetyUuid() {
-        // given
         // when
         val post = helper.persistPost()
         // then
         Assertions.assertThat(post).isNotNull()
         Assertions.assertThat(postService.getByUuid(post.uuid)).isNotNull().isEqualTo(post)
     }
+    //endregion
 
 }

@@ -58,7 +58,7 @@ class PostServiceImpl : PostService {
         PostServiceImpl.logger.debug("Creating post $name")
         val blog: Blog = blogService.getByUuid(blogUuid)
         val tags: List<Tag> = tagService.getByUuids(tagUuids)
-        val categories: List<Category> = categoryUuids.map { uuid -> categoryService.getByUuid(uuid) }.toList()
+        val categories: List<Category> = categoryService.getByUuids(categoryUuids)
         return postRepository.save(Post(name, title, content, blog, tags, categories))
     }
     //endregion
