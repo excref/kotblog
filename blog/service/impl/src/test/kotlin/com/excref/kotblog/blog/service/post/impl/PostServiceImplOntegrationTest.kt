@@ -19,7 +19,7 @@ class PostServiceImplOntegrationTest : AbstractServiceIntegrationTest() {
 
     //region Test methods
     @Test
-    fun create() {
+    fun createAndGetyUuid() {
         // given
         // when
         val post = helper.persistPost()

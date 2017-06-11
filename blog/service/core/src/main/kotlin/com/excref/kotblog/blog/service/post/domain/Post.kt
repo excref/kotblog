@@ -4,15 +4,13 @@ import com.excref.kotblog.blog.service.blog.domain.Blog
 import com.excref.kotblog.blog.service.category.domain.Category
 import com.excref.kotblog.blog.service.common.UuidAwareDomain
 import com.excref.kotblog.blog.service.tag.domain.Tag
-import javax.persistence.Column
-import javax.persistence.FetchType
-import javax.persistence.JoinColumn
-import javax.persistence.ManyToOne
+import javax.persistence.*
 
 /**
  * @author Gugo dzya
  * @since 6/10/17 6:59 PM
  */
+@Entity
 class Post(
         @Column(name = "name", nullable = false)
         val name: String,
@@ -23,15 +21,14 @@ class Post(
         @Column(name = "content", nullable = false)
         val content: String,
 
-        @ManyToOne(optional = false, fetch = FetchType.LAZY)
+        @OneToOne(optional = false, fetch = FetchType.LAZY)
         @JoinColumn(name = "blog_id", nullable = false)
         val blog: Blog,
 
-        @ManyToOne(optional = false, fetch = FetchType.LAZY)
-        @JoinColumn(name = "tag_id", nullable = false)
-        val tags: List<Tag>,
+        @OneToMany(cascade = arrayOf(CascadeType.ALL))
+        val tags: List<Tag> = ArrayList(),
 
-        @ManyToOne(optional = false, fetch = FetchType.LAZY)
-        @JoinColumn(name = "tag_id", nullable = false)
-        val categories: List<Category>
+        @OneToMany(cascade = arrayOf(CascadeType.ALL))
+        var categories: List<Category> = ArrayList()
+
 ) : UuidAwareDomain()

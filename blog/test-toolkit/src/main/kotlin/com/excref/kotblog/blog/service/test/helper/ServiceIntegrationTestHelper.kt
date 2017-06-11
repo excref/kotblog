@@ -65,12 +65,13 @@ class ServiceIntegrationTestHelper {
 
     //region Post
     fun persistPost(
+
             name: String = UUID.randomUUID().toString(),
             title: String = UUID.randomUUID().toString(),
             content: String = UUID.randomUUID().toString(),
-            blogUuid: String = UUID.randomUUID().toString(),
-            tagUuids: List<String> = listOf(UUID.randomUUID().toString(), UUID.randomUUID().toString()),
-            categoryUuids: List<String> = listOf(UUID.randomUUID().toString(), UUID.randomUUID().toString())
+            blogUuid: String = persistBlog().uuid,
+            tagUuids: List<String> = listOf(persistTag().uuid, persistTag().uuid),
+            categoryUuids: List<String> = listOf(persistCategory().uuid, persistCategory().uuid)
     ): Post = postService.create(name, title, content, blogUuid, tagUuids, categoryUuids)
     //endregion
 
