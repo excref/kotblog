@@ -5,6 +5,7 @@ import com.excref.kotblog.blog.service.tag.TagService
 import com.excref.kotblog.blog.service.tag.domain.Tag
 import com.excref.kotblog.blog.service.tag.exception.TagAlreadyExistsForNameException
 import com.excref.kotblog.blog.service.tag.exception.TagNotExistsForUuidException
+import com.excref.kotblog.blog.service.tag.exception.TagsNotExistsForUuidsException
 import com.excref.kotblog.blog.service.test.AbstractServiceImplTest
 import org.assertj.core.api.Assertions.assertThat
 import org.easymock.EasyMock.*
@@ -115,6 +116,49 @@ class TagServiceImplTest : AbstractServiceImplTest() {
         // test scenario
         val result = tagService.getByUuid(uuid)
         assertThat(result).isNotNull().isEqualTo(tag)
+        verifyAll()
+    }
+    //endregion
+
+    //region getByUuids
+    /**
+     * When no tags found
+     */
+    @Test
+    fun testGetByUuids1() {
+        resetAll()
+        // test data
+        val uuid = UUID.randomUUID().toString()
+        val uuid2 = UUID.randomUUID().toString()
+        val uuids = listOf(uuid, uuid2)
+        // expectations
+        expect(tagRepository.findByUuidIn(uuids)).andReturn(null)
+        replayAll()
+        // test scenario
+        try {
+            tagService.getByUuids(uuids)
+        } catch (ex: TagsNotExistsForUuidsException) {
+            assertThat(ex).isNotNull().extracting("uuids").containsOnly(uuids)
+        }
+        verifyAll()
+    }
+
+    /**
+     * When tag exists
+     */
+    @Test
+    fun testGetByUuds2() {
+        resetAll()
+        // test data
+        val tag = helper.buildTag()
+        val tag2 = helper.buildTag()
+        val uuids = listOf<String>(tag.uuid, tag2.uuid)
+        // expectations
+        expect(tagRepository.findByUuidIn(uuids)).andReturn(listOf(tag, tag2))
+        replayAll()
+        // test scenario
+        val result = tagService.getByUuids(uuids)
+        assertThat(result).isNotNull().containsOnly(tag, tag2)
         verifyAll()
     }
     //endregion

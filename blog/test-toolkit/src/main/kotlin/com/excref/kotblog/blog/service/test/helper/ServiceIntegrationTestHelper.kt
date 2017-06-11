@@ -4,6 +4,8 @@ import com.excref.kotblog.blog.service.blog.BlogService
 import com.excref.kotblog.blog.service.blog.domain.Blog
 import com.excref.kotblog.blog.service.category.CategoryService
 import com.excref.kotblog.blog.service.category.domain.Category
+import com.excref.kotblog.blog.service.post.PostService
+import com.excref.kotblog.blog.service.post.domain.Post
 import com.excref.kotblog.blog.service.tag.TagService
 import com.excref.kotblog.blog.service.tag.domain.Tag
 import com.excref.kotblog.blog.service.user.UserService
@@ -32,6 +34,9 @@ class ServiceIntegrationTestHelper {
 
     @Autowired
     private lateinit var blogService: BlogService
+
+    @Autowired
+    private lateinit var postService: PostService
     //endregion
 
     //region Public methods
@@ -54,8 +59,19 @@ class ServiceIntegrationTestHelper {
     fun persistUser(
             email: String = UUID.randomUUID().toString(),
             password: String = UUID.randomUUID().toString(),
-            role: UserRole = UserRole.GUEST
+            role: UserRole = UserRole.USER
     ): User = userService.create(email, password, role)
+    //endregion
+
+    //region Post
+    fun persistPost(
+            name: String = UUID.randomUUID().toString(),
+            title: String = UUID.randomUUID().toString(),
+            content: String = UUID.randomUUID().toString(),
+            blogUuid: String = UUID.randomUUID().toString(),
+            tagUuids: List<String> = listOf(UUID.randomUUID().toString(), UUID.randomUUID().toString()),
+            categoryUuids: List<String> = listOf(UUID.randomUUID().toString(), UUID.randomUUID().toString())
+    ): Post = postService.create(name, title, content, blogUuid, tagUuids, categoryUuids)
     //endregion
 
     //region Blog

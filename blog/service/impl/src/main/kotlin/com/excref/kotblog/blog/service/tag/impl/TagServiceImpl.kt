@@ -5,6 +5,7 @@ import com.excref.kotblog.blog.service.tag.TagService
 import com.excref.kotblog.blog.service.tag.domain.Tag
 import com.excref.kotblog.blog.service.tag.exception.TagAlreadyExistsForNameException
 import com.excref.kotblog.blog.service.tag.exception.TagNotExistsForUuidException
+import com.excref.kotblog.blog.service.tag.exception.TagsNotExistsForUuidsException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -45,6 +46,15 @@ class TagServiceImpl : TagService {
         logger.debug("Getting tag with name - $name")
         return tagRepository.findByName(name) != null
     }
+
+    @Transactional(readOnly = true)
+    override fun getByUuids(uuids: List<String>): List<Tag> {
+        logger.debug("Getting tags with uuids - $uuids")
+        val tags = tagRepository.findByUuidIn(uuids)
+        assertTagsNotEmptyForUuids(tags, uuids)
+        logger.debug("Successfully got tags - $tags")
+        return tags as List<Tag>
+    }
     //endregion
 
     //region Utility methods
@@ -59,6 +69,13 @@ class TagServiceImpl : TagService {
         if (tag == null) {
             logger.error("Can not find tag for uuid $uuid")
             throw TagNotExistsForUuidException(uuid, "Can not find tag for uuid $uuid")
+        }
+    }
+
+    private fun assertTagsNotEmptyForUuids(tags: List<Tag>?, uuids: List<String>) {
+        if (tags == null || tags.isEmpty()) {
+            logger.error("Can not find tag for uuids $uuids")
+            throw TagsNotExistsForUuidsException(uuids, "Can not find tag for uuid $uuids")
         }
     }
     //endregion

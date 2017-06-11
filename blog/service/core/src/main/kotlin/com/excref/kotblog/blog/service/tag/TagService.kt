@@ -26,6 +26,15 @@ interface TagService {
     fun getByUuid(uuid: String): Tag
 
     /**
+     * Gets tag by given uuid
+     *
+     * @param   uuids The tag uuid
+     * @return  Tags
+     * @throws  com.excref.kotblog.blog.service.tag.exception.TagNotExistsForUuidException If tag not exists
+     */
+    fun getByUuids(uuids: List<String>): List<Tag>
+
+    /**
      * Checks if the tag exists for the given name
      *
      * @param   name The tag name

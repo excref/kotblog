@@ -22,7 +22,7 @@ class ServiceImplTestHelper {
     fun buildUser(
             email: String = UUID.randomUUID().toString(),
             password: String = UUID.randomUUID().toString(),
-            role: UserRole = UserRole.GUEST
+            role: UserRole = UserRole.USER
     ): User = User(email, password, role)
     //endregion
 
