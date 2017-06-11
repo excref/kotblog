@@ -28,7 +28,7 @@ class ServiceImplTestHelper {
     //endregion
 
     //region Post
-    fun buildPost(): Post = Post(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), buildBlog(), listOf(buildTag()), listOf(buildCategory()))
+    fun buildPost(name: String = UUID.randomUUID().toString(), title: String = UUID.randomUUID().toString(), content: String = UUID.randomUUID().toString(), blog: Blog = buildBlog(), tags: List<Tag> = listOf(buildTag()), categories: List<Category> = listOf(buildCategory())): Post = Post(name, title, content, blog, tags, categories)
     //endregion
 
     //region Category

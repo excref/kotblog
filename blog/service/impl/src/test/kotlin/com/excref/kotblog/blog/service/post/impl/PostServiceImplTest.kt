@@ -3,11 +3,16 @@ package com.excref.kotblog.blog.service.post.impl
 import com.excref.kotblog.blog.persistence.post.PostRepository
 import com.excref.kotblog.blog.service.blog.BlogService
 import com.excref.kotblog.blog.service.category.CategoryService
+import com.excref.kotblog.blog.service.category.domain.Category
 import com.excref.kotblog.blog.service.post.PostService
+import com.excref.kotblog.blog.service.post.domain.Post
 import com.excref.kotblog.blog.service.tag.TagService
+import com.excref.kotblog.blog.service.tag.domain.Tag
 import com.excref.kotblog.blog.service.test.AbstractServiceImplTest
 import org.assertj.core.api.Assertions.assertThat
 import org.easymock.EasyMock
+import org.easymock.EasyMock.expect
+import org.easymock.EasyMock.isA
 import org.easymock.Mock
 import org.easymock.TestSubject
 import org.junit.Test
@@ -56,15 +61,15 @@ class PostServiceImplTest : AbstractServiceImplTest(){
     @Test
     fun create2() {
         resetAll()
-        val post = helper.buildPost()
-        val tagUuids = post.tags.map { tg -> tg.uuid }.toList()
-        val categoryUuids = post.categories.map { ctg -> ctg.uuid }.toList()
+        val post: Post = helper. buildPost()
+        val tagUuids = post.tags.map { tg: Tag -> tg.uuid }.toList()
+        val categoryUuids = post.categories.map { ctg: Category -> ctg.uuid }.toList()
         // test data
         //expectations
-        EasyMock.expect(blogService.getByUuid(post.blog.uuid)).andReturn(helper.buildBlog())
-        EasyMock.expect(tagService.getByUuids(tagUuids)).andReturn(listOf(helper.buildTag()))
-        EasyMock.expect(categoryService.getByUuids(categoryUuids)).andReturn(listOf(helper.buildCategory()))
-//        expect(categoryRepository.save(isA(Category::class.java))).andAnswer({ EasyMock.getCurrentArguments()[0] as Category? })
+        expect(blogService.getByUuid(post.blog.uuid)).andReturn(helper.buildBlog())
+        expect(tagService.getByUuids(tagUuids)).andReturn(listOf(helper.buildTag()))
+        expect(categoryService.getByUuids(categoryUuids)).andReturn(listOf(helper.buildCategory()))
+        expect(postRepository.save(isA(Post::class.java))).andAnswer({ EasyMock.getCurrentArguments()[0] as Post? })
         replayAll()
         // test scenario
         val category = postService.create(post.name, post.title, post.content, post.blog.uuid, tagUuids, categoryUuids)
