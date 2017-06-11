@@ -26,5 +26,4 @@ class PostServiceImplOntegrationTest : AbstractServiceIntegrationTest() {
         Assertions.assertThat(postService.getByUuid(post.uuid)).isNotNull().isEqualTo(post)
     }
     //endregion
-
 }

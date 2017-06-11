@@ -116,7 +116,6 @@ class PostServiceImplTest : AbstractServiceImplTest(){
         // test scenario
         val result = postService.create(post.name, post.title, post.content, post.blog.uuid, tagUuids, categoryUuids)
         assertThat(result).isNotNull().isEqualTo(post)
-
         verifyAll()
     }
     //endregion
