@@ -26,5 +26,11 @@ interface CategoryRepository : CrudRepository<Category, Long> {
      */
     fun findByUuid(uuid: String): Category?
 
+    /**
+     * Finds categories by uuids
+     *
+     * @param   uuids The category uuids
+     * @return  list of categories, or empty list if not found
+     */
     fun findByUuidIn(uuids: List<String>): List<Category>?
 }
