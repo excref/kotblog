@@ -1,6 +1,7 @@
 package com.excref.kotblog.blog.service.test.helper
 
 import com.excref.kotblog.blog.service.category.domain.Category
+import com.excref.kotblog.blog.service.post.domain.Post
 import com.excref.kotblog.blog.service.tag.domain.Tag
 import com.excref.kotblog.blog.service.user.domain.User
 import com.excref.kotblog.blog.service.user.domain.UserRole
@@ -27,6 +28,14 @@ class ServiceImplTestHelper {
     
     //region Category
     fun buildCategory(name: String = UUID.randomUUID().toString()): Category = Category(name)
+    //endregion
+
+    //region Post
+    fun buildPost(title: String = UUID.randomUUID().toString(),
+                      content: String = UUID.randomUUID().toString(),
+                      categories: List<Category> = arrayListOf(buildCategory()),
+                      tags: List<Tag> = arrayListOf(buildTag()),
+                      user: User = buildUser()): Post = Post(title, content, categories, tags, user)
     //endregion
   
     //endregion
