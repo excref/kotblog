@@ -40,10 +40,10 @@ class PostServiceImpl : PostService {
     //region Public methods
     @Transactional(readOnly = true)
     override fun getByUuid(uuid: String): Post {
-        PostServiceImpl.logger.debug("Getting post with uuid - $uuid")
+        logger.debug("Getting post with uuid - $uuid")
         val post = postRepository.findByUuid(uuid)
         assertPostNotNullForUuid(post, uuid)
-        PostServiceImpl.logger.debug("Successfully got post - $post")
+        logger.debug("Successfully got post - $post")
         return post as Post
     }
 
@@ -55,7 +55,7 @@ class PostServiceImpl : PostService {
                         tagUuids: List<String>,
                         categoryUuids: List<String>
     ): Post {
-        PostServiceImpl.logger.debug("Creating post $name")
+        logger.debug("Creating post $name")
         val blog: Blog = blogService.getByUuid(blogUuid)
         val tags: List<Tag> = tagService.getByUuids(tagUuids)
         val categories: List<Category> = categoryService.getByUuids(categoryUuids)
@@ -66,7 +66,7 @@ class PostServiceImpl : PostService {
     //region Utility methods
     fun assertPostNotNullForUuid(post: Post?, uuid: String) {
         if (post == null) {
-            PostServiceImpl.logger.error("Can not find post for uuid $uuid")
+            logger.error("Can not find post for uuid $uuid")
             throw PostNotExistsForUuidException(uuid, "Can not find post for uuid $uuid")
         }
     }

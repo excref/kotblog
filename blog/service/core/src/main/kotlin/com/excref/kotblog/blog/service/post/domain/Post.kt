@@ -7,8 +7,7 @@ import com.excref.kotblog.blog.service.tag.domain.Tag
 import javax.persistence.*
 
 /**
- * @author Gugo dzya
- * @since 6/10/17 6:59 PM
+ * @author Rafayel Mirzoyan @since 6/10/17 6:59 PM
  */
 @Entity
 class Post(

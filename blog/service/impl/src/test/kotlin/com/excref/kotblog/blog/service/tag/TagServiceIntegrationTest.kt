@@ -1,6 +1,5 @@
 package com.excref.kotblog.blog.service.tag
 
-import com.excref.kotblog.blog.service.tag.domain.Tag
 import com.excref.kotblog.blog.service.test.AbstractServiceIntegrationTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -43,8 +42,8 @@ class TagServiceIntegrationTest : AbstractServiceIntegrationTest() {
         // given
         val tag = helper.persistTag()
         val tag2 = helper.persistTag()
-        val tags = listOf<Tag>(tag, tag2)
-        val tagsUuids = tags.map { tag-> tag.uuid }.toList()
+        val tags = listOf(tag, tag2)
+        val tagsUuids = tags.map { it-> it.uuid }.toList()
         // when
         val result = tagService.getByUuids(tagsUuids)
         // then

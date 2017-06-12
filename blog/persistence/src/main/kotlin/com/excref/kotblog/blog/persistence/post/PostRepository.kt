@@ -20,7 +20,7 @@ interface PostRepository : CrudRepository<Post, Long> {
     fun findByUuid(uuid: String): Post?
 
     /**
-     * Finds Post name
+     * Finds Post by name
      *
      * @param   name The Post name
      * @return  Post if exists, null otherwise

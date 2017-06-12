@@ -1,7 +1,7 @@
 package com.excref.kotblog.blog.service.post
 
 import com.excref.kotblog.blog.service.test.AbstractServiceIntegrationTest
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -22,8 +22,8 @@ class PostServiceImplIntegrationTest : AbstractServiceIntegrationTest() {
         // when
         val post = helper.persistPost()
         // then
-        Assertions.assertThat(post).isNotNull()
-        Assertions.assertThat(postService.getByUuid(post.uuid)).isNotNull().isEqualTo(post)
+        assertThat(post).isNotNull()
+        assertThat(postService.getByUuid(post.uuid)).isNotNull().isEqualTo(post)
     }
     //endregion
 }

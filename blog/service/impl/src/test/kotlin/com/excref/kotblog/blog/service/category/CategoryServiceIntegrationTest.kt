@@ -1,6 +1,5 @@
 package com.excref.kotblog.blog.service.category
 
-import com.excref.kotblog.blog.service.category.domain.Category
 import com.excref.kotblog.blog.service.test.AbstractServiceIntegrationTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -44,9 +43,9 @@ class CategoryServiceIntegrationTest : AbstractServiceIntegrationTest() {
         // given
         val category = helper.persistCategory()
         val category2 = helper.persistCategory()
-        val categories = listOf<Category>(category, category2)
+        val categories = listOf(category, category2)
         // when
-        val result = categoryService.getByUuids(categories.map { cat -> cat.uuid }.toList())
+        val result = categoryService.getByUuids(categories.map { it -> it.uuid }.toList())
         // then
         assertThat(result).isNotNull().containsAll(categories).hasSameSizeAs(categories)
     }

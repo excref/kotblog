@@ -3,12 +3,10 @@ package com.excref.kotblog.blog.service.post.impl
 import com.excref.kotblog.blog.persistence.post.PostRepository
 import com.excref.kotblog.blog.service.blog.BlogService
 import com.excref.kotblog.blog.service.category.CategoryService
-import com.excref.kotblog.blog.service.category.domain.Category
 import com.excref.kotblog.blog.service.category.exception.PostNotExistsForUuidException
 import com.excref.kotblog.blog.service.post.PostService
 import com.excref.kotblog.blog.service.post.domain.Post
 import com.excref.kotblog.blog.service.tag.TagService
-import com.excref.kotblog.blog.service.tag.domain.Tag
 import com.excref.kotblog.blog.service.test.AbstractServiceImplTest
 import org.assertj.core.api.Assertions.assertThat
 import org.easymock.EasyMock.expect
@@ -99,13 +97,12 @@ class PostServiceImplTest : AbstractServiceImplTest(){
     /**
      *  main scenario
      */
-
     @Test
     fun create() {
         resetAll()
         val post: Post = helper. buildPost()
-        val tagUuids = post.tags.map { tg: Tag -> tg.uuid }.toList()
-        val categoryUuids = post.categories.map { ctg: Category -> ctg.uuid }.toList()
+        val tagUuids = post.tags.map { it -> it.uuid }.toList()
+        val categoryUuids = post.categories.map { it -> it.uuid }.toList()
         // test data
         //expectations
         expect(blogService.getByUuid(post.blog.uuid)).andReturn(helper.buildBlog())
