@@ -4,6 +4,8 @@ import com.excref.kotblog.blog.service.test.AbstractServiceIntegrationTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.util.*
+
 
 /**
  * @author Rafayel Mirzoyan
@@ -18,12 +20,33 @@ class PostServiceIntegrationTest : AbstractServiceIntegrationTest() {
 
     //region Test methods
     @Test
-    fun createAndGetyUuid() {
+    fun testCreate() {
+        //given
+        val title = UUID.randomUUID().toString()
+        val content = UUID.randomUUID().toString()
+        val blog = helper.persistBlog()
+        val categoryAndTagUuids = (1..2).map { helper.persistCategory() to helper.persistTag() }.toList()
+        val categories = categoryAndTagUuids.map { it.first }.toList()
+        val categoryUuids = categoryAndTagUuids.map { it.first.uuid }.toList()
+        val tags = categoryAndTagUuids.map { it.second }.toList()
+        val tagUuids = categoryAndTagUuids.map { it.second.uuid }.toList()
         // when
-        val post = helper.persistPost()
+        val result = postService.create(title, content, blog.uuid, tagUuids, categoryUuids)
         // then
-        assertThat(post).isNotNull()
-        assertThat(postService.getByUuid(post.uuid)).isNotNull().isEqualTo(post)
+        assertThat(result).isNotNull().extracting("title", "content").containsOnly(title, content)
+        assertThat(blog).isEqualTo(result.blog)
+        assertThat(categories).isEqualTo(result.categories)
+        assertThat(tags).isEqualTo(result.tags)
+    }
+
+    @Test
+    fun testGetUuid() {
+        // given
+        val post = helper.persistPost()
+        // when
+        val result = postService.getByUuid(post.uuid)
+        // then
+        assertThat(result).isNotNull().isEqualTo(post)
     }
     //endregion
 }

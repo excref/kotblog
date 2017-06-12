@@ -3,9 +3,9 @@ package com.excref.kotblog.blog.service.post.impl
 import com.excref.kotblog.blog.persistence.post.PostRepository
 import com.excref.kotblog.blog.service.blog.BlogService
 import com.excref.kotblog.blog.service.category.CategoryService
-import com.excref.kotblog.blog.service.category.exception.PostNotExistsForUuidException
 import com.excref.kotblog.blog.service.post.PostService
 import com.excref.kotblog.blog.service.post.domain.Post
+import com.excref.kotblog.blog.service.post.exception.PostNotFoundForUuidException
 import com.excref.kotblog.blog.service.tag.TagService
 import com.excref.kotblog.blog.service.test.AbstractServiceImplTest
 import org.assertj.core.api.Assertions.assertThat
@@ -20,7 +20,7 @@ import java.util.*
  * @author Rafayel Mirzoyan
  * @since 6/11/17 3:39 PM
  */
-class PostServiceImplTest : AbstractServiceImplTest(){
+class PostServiceImplTest : AbstractServiceImplTest() {
 
     //region Test subject and mocks
     @TestSubject
@@ -52,9 +52,8 @@ class PostServiceImplTest : AbstractServiceImplTest(){
     //endregion
 
     //region getByUuid
-
     /**
-     *  when nothing
+     *  when when post does not exists
      */
     @Test
     fun testGetByUuid() {
@@ -67,15 +66,12 @@ class PostServiceImplTest : AbstractServiceImplTest(){
         // test scenario
         try {
             postService.getByUuid(uuid)
-        } catch (ex: PostNotExistsForUuidException) {
+        } catch (ex: PostNotFoundForUuidException) {
             assertThat(ex).isNotNull().extracting("uuid").containsOnly(uuid)
         }
         verifyAll()
     }
 
-    /**
-     * main scenario
-     */
     @Test
     fun getByUuid2() {
         resetAll()
@@ -93,17 +89,13 @@ class PostServiceImplTest : AbstractServiceImplTest(){
     //endregion
 
     //region create
-
-    /**
-     *  main scenario
-     */
     @Test
     fun create() {
         resetAll()
-        val post: Post = helper. buildPost()
+        // test data
+        val post: Post = helper.buildPost()
         val tagUuids = post.tags.map { it -> it.uuid }.toList()
         val categoryUuids = post.categories.map { it -> it.uuid }.toList()
-        // test data
         //expectations
         expect(blogService.getByUuid(post.blog.uuid)).andReturn(helper.buildBlog())
         expect(tagService.getByUuids(tagUuids)).andReturn(listOf(helper.buildTag()))
@@ -111,7 +103,7 @@ class PostServiceImplTest : AbstractServiceImplTest(){
         expect(postRepository.save(isA(Post::class.java))).andReturn(post)
         replayAll()
         // test scenario
-        val result = postService.create(post.name, post.title, post.content, post.blog.uuid, tagUuids, categoryUuids)
+        val result = postService.create(post.title, post.content, post.blog.uuid, tagUuids, categoryUuids)
         assertThat(result).isNotNull().isEqualTo(post)
         verifyAll()
     }

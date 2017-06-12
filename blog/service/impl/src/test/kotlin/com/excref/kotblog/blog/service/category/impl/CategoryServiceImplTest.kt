@@ -146,11 +146,6 @@ class CategoryServiceImplTest : AbstractServiceImplTest() {
         } catch (ex: CategoriesNotExistsForUuidsException) {
             assertThat(ex).isNotNull().extracting("uuids").containsOnly(uuids)
         }
-        try {
-            categoryService.getByUuids(uuids)
-        } catch (ex: CategoriesNotExistsForUuidsException) {
-            assertThat(ex).isNotNull().extracting("uuids").containsOnly(uuids)
-        }
         verifyAll()
     }
 
@@ -167,7 +162,7 @@ class CategoryServiceImplTest : AbstractServiceImplTest() {
         replayAll()
         // test scenario
         val result = categoryService.getByUuids(uuids)
-        assertThat(result).isNotNull().isEqualTo(categories)
+        assertThat(result).isNotNull.isEqualTo(categories)
         verifyAll()
     }
     //endregion

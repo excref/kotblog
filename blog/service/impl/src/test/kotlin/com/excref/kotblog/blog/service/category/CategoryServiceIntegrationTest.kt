@@ -47,7 +47,7 @@ class CategoryServiceIntegrationTest : AbstractServiceIntegrationTest() {
         // when
         val result = categoryService.getByUuids(categories.map { it -> it.uuid }.toList())
         // then
-        assertThat(result).isNotNull().containsAll(categories).hasSameSizeAs(categories)
+        assertThat(result).isNotNull.containsAll(categories).hasSameSizeAs(categories)
     }
 
     @Test

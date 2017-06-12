@@ -43,11 +43,11 @@ class TagServiceIntegrationTest : AbstractServiceIntegrationTest() {
         val tag = helper.persistTag()
         val tag2 = helper.persistTag()
         val tags = listOf(tag, tag2)
-        val tagsUuids = tags.map { it-> it.uuid }.toList()
+        val tagsUuids = tags.map { it -> it.uuid }.toList()
         // when
         val result = tagService.getByUuids(tagsUuids)
         // then
-        assertThat(result).isNotNull().containsAll(tags)
+        assertThat(result).isNotNull.containsAll(tags)
     }
 
     @Test

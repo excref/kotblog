@@ -26,7 +26,7 @@ interface TagService {
     fun getByUuid(uuid: String): Tag
 
     /**
-     * Gets tag by given uuid
+     * Gets tags by uuids
      *
      * @param   uuids  tags uuids
      * @return  Tags if exist

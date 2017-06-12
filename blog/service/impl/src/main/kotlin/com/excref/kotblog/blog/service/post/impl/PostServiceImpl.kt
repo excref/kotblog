@@ -5,9 +5,9 @@ import com.excref.kotblog.blog.service.blog.BlogService
 import com.excref.kotblog.blog.service.blog.domain.Blog
 import com.excref.kotblog.blog.service.category.CategoryService
 import com.excref.kotblog.blog.service.category.domain.Category
-import com.excref.kotblog.blog.service.category.exception.PostNotExistsForUuidException
 import com.excref.kotblog.blog.service.post.PostService
 import com.excref.kotblog.blog.service.post.domain.Post
+import com.excref.kotblog.blog.service.post.exception.PostNotFoundForUuidException
 import com.excref.kotblog.blog.service.tag.TagService
 import com.excref.kotblog.blog.service.tag.domain.Tag
 import org.slf4j.Logger
@@ -48,18 +48,20 @@ class PostServiceImpl : PostService {
     }
 
     @Transactional
-    override fun create(name: String,
-                        title: String,
+    override fun create(title: String,
                         content: String,
                         blogUuid: String,
                         tagUuids: List<String>,
                         categoryUuids: List<String>
     ): Post {
-        logger.debug("Creating post $name")
+        logger.debug("Creating post with title - $title")
         val blog: Blog = blogService.getByUuid(blogUuid)
+        logger.debug("Got blog - $blog for uuid $blogUuid")
         val tags: List<Tag> = tagService.getByUuids(tagUuids)
+        logger.debug("Got tags - $tags for uuids - $tagUuids")
         val categories: List<Category> = categoryService.getByUuids(categoryUuids)
-        return postRepository.save(Post(name, title, content, blog, tags, categories))
+        logger.debug("Got categories - $categories for uuids - $categoryUuids")
+        return postRepository.save(Post(title, content, blog, tags, categories))
     }
     //endregion
 
@@ -67,7 +69,7 @@ class PostServiceImpl : PostService {
     fun assertPostNotNullForUuid(post: Post?, uuid: String) {
         if (post == null) {
             logger.error("Can not find post for uuid $uuid")
-            throw PostNotExistsForUuidException(uuid, "Can not find post for uuid $uuid")
+            throw PostNotFoundForUuidException(uuid, "Can not find post for uuid $uuid")
         }
     }
     //endregion

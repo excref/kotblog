@@ -14,6 +14,8 @@ import com.excref.kotblog.blog.service.user.domain.UserRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.*
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 
 /**
  * @author Arthur Asatryan
@@ -23,6 +25,9 @@ import java.util.*
 class ServiceIntegrationTestHelper {
 
     //region Dependencies
+    @PersistenceContext
+    private lateinit var entityManager: EntityManager
+
     @Autowired
     private lateinit var tagService: TagService
 
@@ -71,11 +76,25 @@ class ServiceIntegrationTestHelper {
             blogUuid: String = persistBlog().uuid,
             tagUuids: List<String> = listOf(persistTag().uuid, persistTag().uuid),
             categoryUuids: List<String> = listOf(persistCategory().uuid, persistCategory().uuid)
-    ): Post = postService.create(name, title, content, blogUuid, tagUuids, categoryUuids)
+    ): Post = postService.create(title, content, blogUuid, tagUuids, categoryUuids)
     //endregion
 
     //region Blog
     fun persistBlog(name: String = UUID.randomUUID().toString(), user: User = persistUser()): Blog = blogService.create(name, user.uuid)
+    //endregion
+
+    //region Utility methods
+    fun flush() {
+        entityManager.flush()
+    }
+
+    fun clear() {
+        entityManager.flush()
+    }
+
+    fun flushAndClear() {
+        entityManager.flush()
+    }
     //endregion
 
     //endregion

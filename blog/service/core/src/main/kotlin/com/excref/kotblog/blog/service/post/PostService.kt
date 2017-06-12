@@ -17,8 +17,7 @@ interface PostService {
      * @param   categoryUuids The post categories uuids
      * @return  Post if created successfully
      */
-    fun create(name: String,
-               title: String,
+    fun create(title: String,
                content: String,
                blogUuid: String,
                tagUuids: List<String>,
@@ -30,7 +29,7 @@ interface PostService {
      *
      * @param   uuid The post's uuid
      * @return  Blog
-     * @throws  com.excref.kotblog.blog.service.post.exception.PostNotExistsForUuidException When post not found
+     * @throws  com.excref.kotblog.blog.service.post.exception.PostNotFoundForUuidException When post not found
      */
     fun getByUuid(uuid: String): Post
 }

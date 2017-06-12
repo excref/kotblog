@@ -26,7 +26,7 @@ interface CategoryService {
     fun getByUuid(uuid: String): Category
 
     /**
-     * Gets categories by given uuids
+     * Gets categories by uuids
      *
      * @param   uuids The categories uuids
      * @return  Categories

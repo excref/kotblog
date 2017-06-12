@@ -9,7 +9,7 @@ import javax.persistence.*
  * @since 6/10/17 7:17 PM
  */
 @Entity
-data class Blog(
+data class Blog constructor(
         @Column(name = "name", nullable = false, unique = true)
         val name: String,
 

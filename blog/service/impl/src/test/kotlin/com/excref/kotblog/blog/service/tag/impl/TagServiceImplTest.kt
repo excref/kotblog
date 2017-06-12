@@ -133,14 +133,9 @@ class TagServiceImplTest : AbstractServiceImplTest() {
         val uuids = listOf(uuid, uuid2)
         // expectations
         expect(tagRepository.findByUuidIn(uuids)).andReturn(null)
-        expect(tagRepository.findByUuidIn(uuids)).andReturn(ArrayList())
+        expect(tagRepository.findByUuidIn(uuids)).andReturn(listOf())
         replayAll()
         // test scenario
-        try {
-            tagService.getByUuids(uuids)
-        } catch (ex: TagsNotExistsForUuidsException) {
-            assertThat(ex).isNotNull().extracting("uuids").containsOnly(uuids)
-        }
         try {
             tagService.getByUuids(uuids)
         } catch (ex: TagsNotExistsForUuidsException) {
@@ -153,18 +148,18 @@ class TagServiceImplTest : AbstractServiceImplTest() {
      * When tag exists
      */
     @Test
-    fun testGetByUuds2() {
+    fun testGetByUuids2() {
         resetAll()
         // test data
         val tag = helper.buildTag()
         val tag2 = helper.buildTag()
-        val uuids = listOf<String>(tag.uuid, tag2.uuid)
+        val uuids = listOf(tag.uuid, tag2.uuid)
         // expectations
         expect(tagRepository.findByUuidIn(uuids)).andReturn(listOf(tag, tag2))
         replayAll()
         // test scenario
         val result = tagService.getByUuids(uuids)
-        assertThat(result).isNotNull().containsOnly(tag, tag2)
+        assertThat(result).isNotNull.containsOnly(tag, tag2)
         verifyAll()
     }
     //endregion
