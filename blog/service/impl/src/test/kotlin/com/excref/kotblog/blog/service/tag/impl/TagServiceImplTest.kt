@@ -133,7 +133,6 @@ class TagServiceImplTest : AbstractServiceImplTest() {
         val uuids = listOf(uuid, uuid2)
         // expectations
         expect(tagRepository.findByUuidIn(uuids)).andReturn(null)
-        expect(tagRepository.findByUuidIn(uuids)).andReturn(listOf())
         replayAll()
         // test scenario
         try {

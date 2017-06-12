@@ -138,7 +138,6 @@ class CategoryServiceImplTest : AbstractServiceImplTest() {
         val uuids = listOf(UUID.randomUUID().toString())
         // expectations
         expect(categoryRepository.findByUuidIn(uuids)).andReturn(null)
-        expect(categoryRepository.findByUuidIn(uuids)).andReturn(listOf())
         replayAll()
         // test scenario
         try {
