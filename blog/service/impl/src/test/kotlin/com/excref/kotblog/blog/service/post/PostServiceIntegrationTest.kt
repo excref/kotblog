@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
  * @author Rafayel Mirzoyan
  * @since 6/11/17 5:04 AM
  */
-class PostServiceImplIntegrationTest : AbstractServiceIntegrationTest() {
+class PostServiceIntegrationTest : AbstractServiceIntegrationTest() {
 
     //region Dependencies
     @Autowired
