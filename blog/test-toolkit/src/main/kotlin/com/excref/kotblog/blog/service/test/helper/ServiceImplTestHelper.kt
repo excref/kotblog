@@ -2,6 +2,7 @@ package com.excref.kotblog.blog.service.test.helper
 
 import com.excref.kotblog.blog.service.blog.domain.Blog
 import com.excref.kotblog.blog.service.category.domain.Category
+import com.excref.kotblog.blog.service.post.domain.Post
 import com.excref.kotblog.blog.service.tag.domain.Tag
 import com.excref.kotblog.blog.service.user.domain.User
 import com.excref.kotblog.blog.service.user.domain.UserRole
@@ -22,8 +23,18 @@ class ServiceImplTestHelper {
     fun buildUser(
             email: String = UUID.randomUUID().toString(),
             password: String = UUID.randomUUID().toString(),
-            role: UserRole = UserRole.GUEST
+            role: UserRole = UserRole.USER
     ): User = User(email, password, role)
+    //endregion
+
+    //region Post
+    fun buildPost(
+            title: String = UUID.randomUUID().toString(),
+            content: String = UUID.randomUUID().toString(),
+            blog: Blog = buildBlog(),
+            tags: List<Tag> = listOf(buildTag()),
+            categories: List<Category> = listOf(buildCategory())
+    ): Post = Post(title, content, blog, tags, categories)
     //endregion
 
     //region Category

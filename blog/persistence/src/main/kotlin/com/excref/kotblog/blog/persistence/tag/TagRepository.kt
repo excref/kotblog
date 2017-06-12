@@ -25,4 +25,12 @@ interface TagRepository : CrudRepository<Tag, Long> {
      * @return  null if not found
      */
     fun findByUuid(uuid: String): Tag?
+
+    /**
+     * Finds tags by uuids
+     *
+     * @param   uuids Tags uuids
+     * @return  null if not found
+     */
+    fun findByUuidIn(uuids: List<String>): List<Tag>?
 }

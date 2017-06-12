@@ -26,6 +26,15 @@ interface CategoryService {
     fun getByUuid(uuid: String): Category
 
     /**
+     * Gets categories by uuids
+     *
+     * @param   uuids The categories uuids
+     * @return  Categories
+     * @throws  com.excref.kotblog.blog.service.category.exception.CategoriesNotExistsForUuidsException If categories not exists
+     */
+    fun getByUuids(uuids: List<String>): List<Category>
+
+    /**
      * Checks if the category exists for the given name
      *
      * @param   name The category name

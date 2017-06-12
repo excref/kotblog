@@ -3,6 +3,7 @@ package com.excref.kotblog.blog.service.category.impl
 import com.excref.kotblog.blog.persistence.category.CategoryRepository
 import com.excref.kotblog.blog.service.category.CategoryService
 import com.excref.kotblog.blog.service.category.domain.Category
+import com.excref.kotblog.blog.service.category.exception.CategoriesNotExistsForUuidsException
 import com.excref.kotblog.blog.service.category.exception.CategoryAlreadyExistsForNameException
 import com.excref.kotblog.blog.service.category.exception.CategoryNotExistsForUuidException
 import com.excref.kotblog.blog.service.test.AbstractServiceImplTest
@@ -122,6 +123,45 @@ class CategoryServiceImplTest : AbstractServiceImplTest() {
         // test scenario
         val result = categoryService.getByUuid(uuid)
         assertThat(result).isNotNull().isEqualTo(category)
+        verifyAll()
+    }
+    //endregion
+
+    //region getByUuids
+    /**
+     * When does not exists for uuids
+     */
+    @Test
+    fun getByUuids1() {
+        resetAll()
+        // test data
+        val uuids = listOf(UUID.randomUUID().toString())
+        // expectations
+        expect(categoryRepository.findByUuidIn(uuids)).andReturn(null)
+        replayAll()
+        // test scenario
+        try {
+            categoryService.getByUuids(uuids)
+        } catch (ex: CategoriesNotExistsForUuidsException) {
+            assertThat(ex).isNotNull().extracting("uuids").containsOnly(uuids)
+        }
+        verifyAll()
+    }
+
+    @Test
+    fun getByUuids2() {
+        resetAll()
+        // test data
+        val category = helper.buildCategory()
+        val category2 = helper.buildCategory()
+        val uuids = listOf(category.uuid, category2.uuid)
+        val categories = listOf(category, category2)
+        // expectations
+        expect(categoryRepository.findByUuidIn(uuids)).andReturn(categories)
+        replayAll()
+        // test scenario
+        val result = categoryService.getByUuids(uuids)
+        assertThat(result).isNotNull.isEqualTo(categories)
         verifyAll()
     }
     //endregion

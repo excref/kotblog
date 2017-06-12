@@ -8,3 +8,5 @@ package com.excref.kotblog.blog.service.category.exception
 data class CategoryAlreadyExistsForNameException(val name: String, override val message: String) : RuntimeException(message)
 
 data class CategoryNotExistsForUuidException(val uuid: String, override val message: String) : RuntimeException(message)
+
+data class CategoriesNotExistsForUuidsException(val uuids: List<String>, override val message: String) : RuntimeException(message)

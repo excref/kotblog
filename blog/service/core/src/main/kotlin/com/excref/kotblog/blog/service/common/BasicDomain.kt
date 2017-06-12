@@ -19,6 +19,16 @@ abstract class BasicDomain(
         val removed: LocalDateTime? = null
 ) : Serializable {
 
+    //region Public methods
+    /**
+     * Use this method in case if you don't need to collect whole stack of lazy properties
+     * after calling equals and/or hash code
+     */
+    fun <T : BasicDomain> getIdOrNull(domain: T?): Long? {
+        return domain?.id
+    }
+    //endregion
+
     //region Equals, HashCode and ToString
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

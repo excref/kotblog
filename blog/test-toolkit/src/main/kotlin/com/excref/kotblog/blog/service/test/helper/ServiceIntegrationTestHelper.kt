@@ -4,6 +4,8 @@ import com.excref.kotblog.blog.service.blog.BlogService
 import com.excref.kotblog.blog.service.blog.domain.Blog
 import com.excref.kotblog.blog.service.category.CategoryService
 import com.excref.kotblog.blog.service.category.domain.Category
+import com.excref.kotblog.blog.service.post.PostService
+import com.excref.kotblog.blog.service.post.domain.Post
 import com.excref.kotblog.blog.service.tag.TagService
 import com.excref.kotblog.blog.service.tag.domain.Tag
 import com.excref.kotblog.blog.service.user.UserService
@@ -12,6 +14,8 @@ import com.excref.kotblog.blog.service.user.domain.UserRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.*
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 
 /**
  * @author Arthur Asatryan
@@ -21,6 +25,9 @@ import java.util.*
 class ServiceIntegrationTestHelper {
 
     //region Dependencies
+    @PersistenceContext
+    private lateinit var entityManager: EntityManager
+
     @Autowired
     private lateinit var tagService: TagService
 
@@ -32,6 +39,9 @@ class ServiceIntegrationTestHelper {
 
     @Autowired
     private lateinit var blogService: BlogService
+
+    @Autowired
+    private lateinit var postService: PostService
     //endregion
 
     //region Public methods
@@ -54,12 +64,37 @@ class ServiceIntegrationTestHelper {
     fun persistUser(
             email: String = UUID.randomUUID().toString(),
             password: String = UUID.randomUUID().toString(),
-            role: UserRole = UserRole.GUEST
+            role: UserRole = UserRole.USER
     ): User = userService.create(email, password, role)
+    //endregion
+
+    //region Post
+    fun persistPost(
+            name: String = UUID.randomUUID().toString(),
+            title: String = UUID.randomUUID().toString(),
+            content: String = UUID.randomUUID().toString(),
+            blogUuid: String = persistBlog().uuid,
+            tagUuids: List<String> = listOf(persistTag().uuid, persistTag().uuid),
+            categoryUuids: List<String> = listOf(persistCategory().uuid, persistCategory().uuid)
+    ): Post = postService.create(title, content, blogUuid, tagUuids, categoryUuids)
     //endregion
 
     //region Blog
     fun persistBlog(name: String = UUID.randomUUID().toString(), user: User = persistUser()): Blog = blogService.create(name, user.uuid)
+    //endregion
+
+    //region Utility methods
+    fun flush() {
+        entityManager.flush()
+    }
+
+    fun clear() {
+        entityManager.flush()
+    }
+
+    fun flushAndClear() {
+        entityManager.flush()
+    }
     //endregion
 
     //endregion

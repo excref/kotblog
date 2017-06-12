@@ -23,7 +23,7 @@ class UserServiceIntegrationTest : AbstractServiceIntegrationTest() {
         // given
         val email = "biacoder@gmail.com"
         val password = "you can't even guess me! :P"
-        val role = UserRole.BLOGGER
+        val role = UserRole.USER
         // when
         val result = userService.create(email, password, role)
         // then

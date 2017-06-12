@@ -7,3 +7,5 @@ package com.excref.kotblog.blog.service.tag.exception
 data class TagAlreadyExistsForNameException(val name: String, override val message: String) : RuntimeException(message)
 
 data class TagNotExistsForUuidException(val uuid: String, override val message: String) : RuntimeException(message)
+
+data class TagsNotExistsForUuidsException(val uuids: List<String>, override val message: String) : RuntimeException(message)

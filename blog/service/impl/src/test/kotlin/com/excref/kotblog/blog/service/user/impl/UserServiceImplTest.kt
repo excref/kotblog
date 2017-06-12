@@ -69,7 +69,7 @@ class UserServiceImplTest : AbstractServiceImplTest() {
         replayAll()
         // test scenario
         try {
-            userService.create(user.email, UUID.randomUUID().toString(), UserRole.GUEST)
+            userService.create(user.email, UUID.randomUUID().toString(), UserRole.USER)
             fail()
         } catch(ex: UserAlreadyExistsForEmailException) {
             assertThat(ex).isNotNull().extracting("email").containsOnly(user.email)
@@ -86,7 +86,7 @@ class UserServiceImplTest : AbstractServiceImplTest() {
         // test data
         val email = "biacoder@gmail.com"
         val password = "you can't even guess me! :P"
-        val role = UserRole.BLOGGER
+        val role = UserRole.USER
         // expectations
         expect(userRepository.findByEmail(email)).andReturn(null)
         expect(userRepository.save(isA(User::class.java))).andAnswer({ getCurrentArguments()[0] as User })

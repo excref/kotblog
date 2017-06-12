@@ -39,6 +39,18 @@ class CategoryServiceIntegrationTest : AbstractServiceIntegrationTest() {
     }
 
     @Test
+    fun getByUuids() {
+        // given
+        val category = helper.persistCategory()
+        val category2 = helper.persistCategory()
+        val categories = listOf(category, category2)
+        // when
+        val result = categoryService.getByUuids(categories.map { it -> it.uuid }.toList())
+        // then
+        assertThat(result).isNotNull.containsAll(categories).hasSameSizeAs(categories)
+    }
+
+    @Test
     fun existsForName() {
         // given
         val category = helper.persistCategory()
