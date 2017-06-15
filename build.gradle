@@ -2,7 +2,7 @@
 
 buildscript {
     ext {
-        kotlinVersion = '1.1.2-2'
+        kotlinVersion = '1.1.2-5'
         springBootVersion = '1.5.3.RELEASE'
         springManagementVersion = '1.0.2.RELEASE'
         sonarqubeVersion = '2.5'
@@ -114,6 +114,14 @@ project(':blog:api:facade') {
     dependencies {
         compile project(':blog:api:model')
         compile project(':blog:service:impl')
+
+        testCompile project(':blog:test-toolkit')
+    }
+}
+
+project(':blog:api:model') {
+    dependencies {
+        compile "com.fasterxml.jackson.core:jackson-annotations"
     }
 }
 
@@ -132,7 +140,6 @@ project(':blog:persistence') {
 
     dependencies {
         compile project(':blog:service:core')
-
         //	runtime('org.postgresql:postgresql')
     }
 
@@ -148,6 +155,7 @@ project(':blog:test-toolkit') {
 
     dependencies {
         compile project(':blog:service:core')
+        compile project(':blog:api:model')
 
         compile("junit:junit")
         compile('org.springframework.boot:spring-boot-starter-test')
