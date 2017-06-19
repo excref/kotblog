@@ -15,6 +15,9 @@ buildscript {
         mavenLocal()
         mavenCentral()
     }
+
+
+
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
