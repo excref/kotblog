@@ -1,8 +1,7 @@
 //region Common
-
 buildscript {
     ext {
-        kotlinVersion = '1.1.2-5'
+        kotlinVersion = '1.1.51'
         springBootVersion = '1.5.3.RELEASE'
         springManagementVersion = '1.0.2.RELEASE'
         sonarqubeVersion = '2.5'
@@ -63,11 +62,9 @@ allprojects {
         }
     }
 }
-
 //endregion
 
 //region Sonar
-
 apply plugin: "org.sonarqube"
 apply plugin: 'jacoco'
 
@@ -82,11 +79,9 @@ sonarqube {
         property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
     }
 }
-
 //endregion
 
 //region Projects
-
 project(':blog:api:rest') {
 
     apply plugin: "org.springframework.boot"
@@ -166,5 +161,4 @@ project(':blog:test-toolkit') {
     }
 
 }
-
 //endregion
